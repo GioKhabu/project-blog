@@ -4,7 +4,7 @@ import {
   Spline_Sans_Mono,
 } from 'next/font/google';
 import clsx from 'clsx';
-
+import ControlMotion from '@/components/ControlMotion'
 import { LIGHT_TOKENS, DARK_TOKENS } from '@/constants';
 
 import Header from '@/components/Header';
@@ -29,18 +29,20 @@ function RootLayout({ children }) {
   const theme = 'light';
 
   return (
-    <html
-      lang="en"
-      className={clsx(mainFont.variable, monoFont.variable)}
-      data-color-theme={theme}
-      style={theme === 'light' ? LIGHT_TOKENS : DARK_TOKENS}
-    >
-      <body>
-        <Header theme={theme} />
-        <main>{children}</main>
-        <Footer />
-      </body>
-    </html>
+    <ControlMotion>
+      <html
+        lang="en"
+        className={clsx(mainFont.variable, monoFont.variable)}
+        data-color-theme={theme}
+        style={theme === 'light' ? LIGHT_TOKENS : DARK_TOKENS}
+      >
+        <body>
+          <Header theme={theme} />
+          <main>{children}</main>
+          <Footer />
+        </body>
+      </html>
+    </ControlMotion>
   );
 }
 
