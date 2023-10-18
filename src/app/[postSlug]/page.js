@@ -4,12 +4,19 @@ import BlogHero from '@/components/BlogHero';
 import {loadBlogPost} from '@/helpers/file-helpers'
 import {BLOG_TITLE} from '@/constants'
 import COMPONENT_MAP from '@/helpers/mdx-components';
+import { notFound } from 'next/navigation';
+
 
 
 import styles from './postSlug.module.css';
 
 export async function generateMetadata({params}){
-  const { frontmatter } = await loadBlogPost(params.postSlug);
+  const blogPostData = await loadBlogPost(params.postSlug);
+   if (!blogPostData) {
+     return null;
+   }
+
+   const { frontmatter } = blogPostData;
 
   return {
     title: `${frontmatter.title} • ${BLOG_TITLE} `,
@@ -18,7 +25,12 @@ export async function generateMetadata({params}){
 }
 
 async function BlogPost({params}) {
-  const {frontmatter, content} = await loadBlogPost(params.postSlug);
+  const blogPostData = await loadBlogPost(params.postSlug);
+  if (!blogPostData) {
+    notFound();
+  }
+
+  const { frontmatter, content } = blogPostData;
   return (
     <article className={styles.wrapper}>
       <BlogHero title={frontmatter.title} publishedOn={frontmatter.publishedOn} />
