@@ -5,7 +5,8 @@ import {
 } from 'next/font/google';
 import clsx from 'clsx';
 import ControlMotion from '@/components/ControlMotion'
-import { LIGHT_TOKENS, DARK_TOKENS } from '@/constants';
+import { LIGHT_TOKENS, DARK_TOKENS, THEME_COOKIE } from '@/constants';
+import { cookies } from 'next/headers'
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -25,8 +26,8 @@ const monoFont = Spline_Sans_Mono({
 });
 
 function RootLayout({ children }) {
-  // TODO: Dynamic theme depending on user preference
-  const theme = 'light';
+  const savedTheme = cookies().get(THEME_COOKIE);
+  const theme = savedTheme?.value || 'light';
 
   return (
     <ControlMotion>
@@ -37,7 +38,7 @@ function RootLayout({ children }) {
         style={theme === 'light' ? LIGHT_TOKENS : DARK_TOKENS}
       >
         <body>
-          <Header theme={theme} />
+          <Header initialTheme={theme} />
           <main>{children}</main>
           <Footer />
         </body>
